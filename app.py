@@ -18,9 +18,14 @@ st.title("Basic RAG chatbot")
 
 # configure sidebar with settings
 st.sidebar.header("Settings")
-api_key = st.sidebar.text_input("OpenRouter API key")
+api_key = st.sidebar.text_input(
+    "OpenRouter API key",
+    type="password",
+    help="You can get an OpenRouter API key from https://openrouter.ai",
+    value=os.environ.get("OPENROUTER_API_KEY", None)
+)
 uploaded_files = st.sidebar.file_uploader("Upload your documentation files here", accept_multiple_files=True)
-if st.sidebar.button("Build knowledge base", type="primary"):
+if st.sidebar.button("Build knowledge base", type="primary", icon="🔨"):
     if not api_key:
         st.error("Please provide an OpenRouter API key.")
         st.stop()
