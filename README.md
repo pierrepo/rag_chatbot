@@ -11,7 +11,7 @@ uv sync
 Run the chatbot:
 
 ```bash
-uv run app.py
+uv run streamlit runapp.py
 ```
 
 
