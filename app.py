@@ -11,13 +11,13 @@ st.session_state.setdefault("logs", [])
 # configure sidebar with settings
 st.sidebar.header("Settings")
 api_key = st.sidebar.text_input(
-    "OpenRouter API key",
+    "OpenAI API key",
     type="password",
-    help="You can get an OpenRouter API key from https://openrouter.ai",
-    value=os.environ.get("OPENROUTER_API_KEY", None)
+    help="You can get an OpenAI API key from https://platform.openai.com/api-keys",
+    value=os.environ.get("OPENAI_API_KEY", None)
 )
 if api_key:
-    os.environ["OPENROUTER_API_KEY"] = api_key
+    os.environ["OPENAI_API_KEY"] = api_key
 
 pages = {
     "RAG chatbot": [

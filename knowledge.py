@@ -4,6 +4,7 @@ import streamlit as st
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain.docstore.document import Document
+from langchain_openai import OpenAIEmbeddings
 
 st.set_page_config(page_title="Build knowledge base", page_icon="📦")
 
@@ -18,8 +19,8 @@ uploaded_files = st.file_uploader(
 if not st.button("Build knowledge base", type="primary", icon="🔨"):
     st.stop()
 
-if not os.environ.get("OPENROUTER_API_KEY"):
-    st.error("Please provide an OpenRouter API key.")
+if not os.environ.get("OPENAI_API_KEY"):
+    st.error("Please provide an OpenAI API key.")
     st.stop()
 
 if not uploaded_files:
@@ -36,6 +37,9 @@ text_splitter = RecursiveCharacterTextSplitter(
 
 # Intialize chunks list
 document_chunks = []
+
+embeddings = OpenAIEmbeddings(model="text-embedding-3-large")
+chromadb_directory = "chroma_db"
 
 st.write("Building knowledge base... (this may take a while)")
 for uploaded_file in uploaded_files:
@@ -59,4 +63,17 @@ for uploaded_file in uploaded_files:
             )
         document_chunks.append(doc)
     st.write("First chunk:")
+    st.markdown("---")
     st.write(document_chunks[0].page_content)
+    st.markdown("---")
+    vectordb = Chroma.from_documents(
+        documents=document_chunks,
+        embedding=embeddings,
+        persist_directory=chromadb_directory
+    )
+    # Save the database on disk.
+    vectordb.persist()
+    # check that the database have been created and get the number of documents
+    st.write(f"{vectordb._collection.count()} documents in the knowledge base 📦.")
+    st.session_state["chromadb_directory"] = chromadb_directory
+    

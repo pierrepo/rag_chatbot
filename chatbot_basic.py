@@ -7,16 +7,11 @@ st.set_page_config(page_title="Basic Chatbot", page_icon="🤖")
 
 st.title("Basic Chatbot 🤖")
 
-# st.write(os.environ.get("OPENROUTER_MODEL_NAME"))
-
-# st.write(os.environ.get("OPENROUTER_API_KEY"))
 
 llm = ChatOpenAI(
-    model=os.environ.get("OPENROUTER_MODEL_NAME"),
-    base_url="https://openrouter.ai/api/v1",
-    api_key=os.environ.get("OPENROUTER_API_KEY"),
+    model=os.environ.get("OPENAI_MODEL_NAME"),
+    api_key=os.environ.get("OPENAI_API_KEY"),
 )
-
 
 
 with st.chat_message(name="assistant"):
